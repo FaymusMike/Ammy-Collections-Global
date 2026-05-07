@@ -1,0 +1,181 @@
+/* /assets/css/responsive.css */
+/* Tablet and Mobile Responsive Styles */
+
+@media (max-width: 1200px) {
+    .section-padding {
+        padding: 80px 0;
+    }
+    
+    .hero-content h1 {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .section-padding {
+        padding: 60px 0;
+    }
+    
+    .section-header h2 {
+        font-size: 2.3rem;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-content p {
+        font-size: 1.1rem;
+    }
+    
+    .stats-grid {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .brand-story .row {
+        flex-direction: column-reverse;
+        text-align: center;
+    }
+    
+    .story-content {
+        margin-top: 40px;
+    }
+    
+    .stats-grid {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .section-padding {
+        padding: 50px 0;
+    }
+    
+    .section-header h2 {
+        font-size: 2rem;
+    }
+    
+    .hero-section {
+        height: 70vh;
+        min-height: 500px;
+    }
+    
+    .hero-content h1 {
+        font-size: 2rem;
+    }
+    
+    .features-section {
+        margin-top: -30px;
+    }
+    
+    .feature-card {
+        padding: 25px;
+        margin-bottom: 20px;
+    }
+    
+    .promo-content h2 {
+        font-size: 2rem;
+    }
+    
+    .newsletter-form .input-group {
+        flex-direction: column;
+    }
+    
+    .newsletter-form .btn-gold {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .product-actions {
+        flex-direction: column;
+    }
+    
+    .btn-cart, .btn-whatsapp {
+        justify-content: center;
+    }
+    
+    .footer {
+        text-align: center;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .contact-info li {
+        justify-content: center;
+    }
+    
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .hero-content h1 {
+        font-size: 1.5rem;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+    }
+    
+    .btn-gold {
+        padding: 10px 25px;
+        font-size: 0.9rem;
+    }
+    
+    .category-card {
+        height: 200px;
+    }
+    
+    .testimonial-card {
+        padding: 25px;
+    }
+    
+    .stat-item h3 {
+        font-size: 1.5rem;
+    }
+    
+    .footer-brand h3 {
+        font-size: 1.5rem;
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+}
+
+/* Landscape phones */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero-section {
+        height: 100vh;
+    }
+    
+    .navbar {
+        padding: 10px 0;
+    }
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .footer,
+    .whatsapp-float,
+    .newsletter-section {
+        display: none;
+    }
+    
+    body {
+        color: black;
+    }
+}
