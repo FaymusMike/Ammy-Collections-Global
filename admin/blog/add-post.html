@@ -1,0 +1,154 @@
+<!-- admin/blog/add-post.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Blog Post | AA Global Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">...</aside>
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1>Write New Blog Post</h1>
+            </div>
+            <div class="admin-content">
+                <form id="blogPostForm">
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label>Post Title *</label>
+                                <input type="text" id="postTitle" class="form-control" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label>Excerpt / Summary</label>
+                                <textarea id="postExcerpt" class="form-control" rows="3" placeholder="Brief summary of the post..."></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label>Content *</label>
+                                <div id="editor" style="height: 400px;"></div>
+                                <textarea id="postContent" style="display:none;"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label>Category *</label>
+                                <select id="postCategory" class="form-control" required>
+                                    <option value="">Select Category</option>
+                                    <option>Fashion</option><option>Electronics</option>
+                                    <option>Jewelry</option><option>Lifestyle</option>
+                                    <option>Beauty</option><option>Technology</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label>Featured Image</label>
+                                <input type="file" id="featuredImage" class="form-control" accept="image/*">
+                                <div id="imagePreview" class="mt-2"></div>
+                                <input type="hidden" id="imageUrl">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label>Tags (comma separated)</label>
+                                <input type="text" id="postTags" class="form-control" placeholder="luxury, fashion, style">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label>SEO Meta Description</label>
+                                <textarea id="metaDescription" class="form-control" rows="2"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn-gold w-100">Publish Post</button>
+                            <a href="manage-posts.html" class="btn-outline-gold w-100 mt-2 text-center">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    <script src="/firebase/firebase-config.js"></script>
+    <script src="/firebase/storage.js"></script>
+    
+    <script>
+        // Initialize Quill editor
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Write your blog post content here...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link', 'image', 'video'],
+                    ['clean']
+                ]
+            }
+        });
+        
+        // Image upload to Cloudinary
+        document.getElementById('featuredImage').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const preview = document.getElementById('imagePreview');
+            preview.innerHTML = '<div class="spinner"></div>';
+            
+            const result = await uploadToCloudinary(file);
+            if (result.success) {
+                document.getElementById('imageUrl').value = result.url;
+                preview.innerHTML = `<img src="${result.url}" class="img-fluid rounded" style="max-height: 150px;">`;
+                showNotification('Image uploaded successfully!');
+            } else {
+                preview.innerHTML = '<p class="text-danger">Upload failed</p>';
+                showNotification('Image upload failed', 'error');
+            }
+        });
+        
+        // Submit form
+        document.getElementById('blogPostForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const postData = {
+                title: document.getElementById('postTitle').value,
+                excerpt: document.getElementById('postExcerpt').value,
+                content: quill.root.innerHTML,
+                category: document.getElementById('postCategory').value,
+                featuredImage: document.getElementById('imageUrl').value || 'https://via.placeholder.com/800x400',
+                tags: document.getElementById('postTags').value.split(','),
+                metaDescription: document.getElementById('metaDescription').value,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                views: 0,
+                status: 'published'
+            };
+            
+            await db.collection('blog_posts').add(postData);
+            alert('Blog post published successfully!');
+            window.location.href = 'manage-posts.html';
+        });
+        
+        function showNotification(msg, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification-toast notification-${type}`;
+            notification.innerHTML = msg;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+    </script>
+</body>
+</html>

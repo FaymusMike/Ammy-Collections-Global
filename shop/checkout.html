@@ -1,0 +1,203 @@
+<!-- shop/checkout.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | AA Global Collections</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+                <a class="navbar-brand" href="/">
+                    <img src="/assets/images/logo/aa-global-logo.png" alt="AA Global Collections" height="50" class="d-inline-block align-middle">
+                    <span class="brand-text ms-2">
+                        <span class="brand-gold">AA</span> 
+                        <span class="brand-black">GLOBAL</span>
+                        <small class="brand-tagline">COLLECTIONS</small>
+                    </span>
+                </a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb-section">
+        <div class="container">
+            <h1>Checkout</h1>
+            <p>Complete your order</p>
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="checkout-form">
+                        <h3>Shipping Information</h3>
+                        <form id="checkoutForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="fullName" placeholder="Full Name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="email" class="form-control" id="email" placeholder="Email Address" required>
+                                </div>
+                                <div class="col-12">
+                                    <input type="tel" class="form-control" id="phone" placeholder="Phone Number" required>
+                                </div>
+                                <div class="col-12">
+                                    <input type="text" class="form-control" id="address" placeholder="Delivery Address" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="city" placeholder="City" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-control" id="state" required>
+                                        <option value="">Select State</option>
+                                        <option>Lagos</option>
+                                        <option>Abuja</option>
+                                        <option>Rivers</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <h3 class="mt-4">Order Notes (Optional)</h3>
+                            <textarea class="form-control" id="orderNotes" rows="3" placeholder="Special delivery instructions"></textarea>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="order-summary">
+                        <h3>Your Order</h3>
+                        <div id="orderItemsList"></div>
+                        <hr>
+                        <div class="order-total">
+                            <span>Total:</span>
+                            <span id="orderTotal">₦0</span>
+                        </div>
+                        
+                        <div class="payment-methods mt-4">
+                            <h4>Order via</h4>
+                            <button class="btn-whatsapp w-100 mb-3" id="whatsappOrderBtn">
+                                <i class="fab fa-whatsapp"></i> Order via WhatsApp
+                            </button>
+                            <button class="btn-outline-gold w-100" id="emailOrderBtn">
+                                <i class="fas fa-envelope"></i> Order via Email
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="/firebase/firebase-config.js"></script>
+    <script src="/assets/js/main.js"></script>
+    
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let orderTotal = 0;
+        
+        function displayOrderSummary() {
+            const container = document.getElementById('orderItemsList');
+            orderTotal = 0;
+            
+            if (cart.length === 0) {
+                window.location.href = '/shop/cart.html';
+                return;
+            }
+            
+            container.innerHTML = cart.map(item => {
+                const itemTotal = item.price * item.quantity;
+                orderTotal += itemTotal;
+                return `
+                    <div class="order-item">
+                        <span>${item.name} x ${item.quantity}</span>
+                        <span>₦${itemTotal.toLocaleString()}</span>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('orderTotal').textContent = `₦${orderTotal.toLocaleString()}`;
+        }
+        
+        function generateOrderMessage() {
+            const fullName = document.getElementById('fullName')?.value || 'Customer';
+            const phone = document.getElementById('phone')?.value || 'Not provided';
+            const email = document.getElementById('email')?.value || 'Not provided';
+            const address = document.getElementById('address')?.value || 'Not provided';
+            const orderNotes = document.getElementById('orderNotes')?.value || '';
+            
+            let itemsList = '';
+            cart.forEach(item => {
+                itemsList += `\n• ${item.name} - ₦${item.price.toLocaleString()} x ${item.quantity} = ₦${(item.price * item.quantity).toLocaleString()}`;
+            });
+            
+            return `*NEW ORDER FROM AA GLOBAL COLLECTIONS*
+
+*Customer Details:*
+Name: ${fullName}
+Phone: ${phone}
+Email: ${email}
+Address: ${address}
+
+*Order Items:*
+${itemsList}
+
+*Total Amount:* ₦${orderTotal.toLocaleString()}
+
+*Order Notes:* ${orderNotes || 'None'}
+
+Please process this order. Thank you!`;
+        }
+        
+        document.getElementById('whatsappOrderBtn')?.addEventListener('click', () => {
+            const message = generateOrderMessage();
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/2348012345678?text=${encodedMessage}`, '_blank');
+            
+            // Save order to Firestore if available
+            if (typeof db !== 'undefined') {
+                const orderData = {
+                    customerName: document.getElementById('fullName')?.value,
+                    customerEmail: document.getElementById('email')?.value,
+                    customerPhone: document.getElementById('phone')?.value,
+                    address: document.getElementById('address')?.value,
+                    items: cart,
+                    total: orderTotal,
+                    orderDate: new Date().toISOString(),
+                    status: 'pending'
+                };
+                db.collection('orders').add(orderData).catch(console.error);
+            }
+            
+            localStorage.removeItem('cart');
+            setTimeout(() => { window.location.href = '/pages/order-success.html'; }, 1000);
+        });
+        
+        document.getElementById('emailOrderBtn')?.addEventListener('click', () => {
+            const message = generateOrderMessage();
+            const subject = encodeURIComponent('New Order from AA Global Collections');
+            const emailBody = encodeURIComponent(message);
+            window.location.href = `mailto:info@aaglobalcollections.com?subject=${subject}&body=${emailBody}`;
+            
+            setTimeout(() => {
+                localStorage.removeItem('cart');
+                window.location.href = '/pages/order-success.html';
+            }, 2000);
+        });
+        
+        displayOrderSummary();
+        if (typeof updateCartCount === 'function') updateCartCount();
+    </script>
+</body>
+</html>

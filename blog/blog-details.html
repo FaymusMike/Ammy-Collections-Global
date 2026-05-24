@@ -1,0 +1,269 @@
+<!-- blog/blog-details.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post | AA Global Collections</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body>
+
+    <a href="https://wa.me/2348012345678" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/assets/images/logo/aa-global-logo.png" alt="AA Global Collections" height="45" class="d-inline-block align-middle">
+                <span class="brand-text ms-2">
+                    <span class="brand-gold">AA</span> 
+                    <span class="brand-black">GLOBAL</span>
+                    <small class="brand-tagline">COLLECTIONS</small>
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop/shop.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop/categories.html">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/blog/blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pages/about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pages/contact.html">Contact</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link cart-icon" href="/shop/cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="breadcrumb-section">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/blog/blog.html">Blog</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Post</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8" id="blogPostContainer">
+                    <div class="text-center">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-brand text-center mb-4">
+                <img src="/assets/images/logo/aa-global-logo.png" alt="AA Global Collections" height="60">
+                <p class="tagline mt-2">LOOK EXPENSIVE. SPEND LESS.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AA Global Collections. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="/firebase/firebase-config.js"></script>
+    <script src="/assets/js/main.js"></script>
+    
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const postId = urlParams.get('id');
+        
+        const blogPosts = {
+            '1': {
+                title: '5 Luxury Fashion Trends for 2024',
+                date: 'December 15, 2024',
+                category: 'Fashion',
+                image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=800',
+                content: `
+                    <p>The world of luxury fashion is evolving, and 2024 brings exciting new trends that blend sophistication with sustainability. From bold colors to timeless silhouettes, here's what's shaping the luxury fashion landscape.</p>
+                    
+                    <h2>1. Sustainable Luxury</h2>
+                    <p>Eco-conscious consumers are driving demand for sustainable luxury. Brands are responding with recycled materials, ethical production, and transparent supply chains.</p>
+                    
+                    <h2>2. Bold Colors</h2>
+                    <p>Say goodbye to neutral tones. 2024 is all about making statements with vibrant colors like emerald green, royal blue, and rich burgundy.</p>
+                    
+                    <h2>3. Statement Accessories</h2>
+                    <p>Oversized bags, chunky jewelry, and bold belts are taking center stage. These pieces transform any outfit from simple to spectacular.</p>
+                    
+                    <h2>4. Tech-Integrated Fashion</h2>
+                    <p>Smart fabrics and wearable technology are becoming mainstream. Think jackets with built-in heating and bags that charge your devices.</p>
+                    
+                    <h2>5. Return of Craftsmanship</h2>
+                    <p>Artisanal details, hand-embroidery, and traditional techniques are highly valued. Customers want pieces that tell a story.</p>
+                    
+                    <p>At AA Global Collections, we curate pieces that embody these trends while maintaining our commitment to affordable luxury. Visit our shop to discover the latest collections.</p>
+                `
+            },
+            '2': {
+                title: 'How to Style Affordable Jewelry',
+                date: 'December 10, 2024',
+                category: 'Jewelry',
+                image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800',
+                content: `
+                    <p>Jewelry has the power to transform any outfit from ordinary to extraordinary. The best part? You don't need to spend a fortune to look like a million dollars.</p>
+                    
+                    <h2>Layer Like a Pro</h2>
+                    <p>Mix delicate chains with statement pieces. Start with a choker, add a mid-length chain, and finish with a longer pendant. The key is varying the lengths and textures.</p>
+                    
+                    <h2>Mix Metals Confidently</h2>
+                    <p>Gone are the days when you had to stick to one metal. Rose gold with yellow gold? Yes. Silver with platinum? Absolutely. Mixed metals create depth and interest.</p>
+                    
+                    <h2>Statement Pieces</h2>
+                    <p>One bold piece can be enough. A chunky cuff, oversized hoops, or a dramatic necklace draws attention and elevates even the simplest outfit.</p>
+                    
+                    <h2>Everyday Elegance</h2>
+                    <p>For daily wear, choose pieces that are versatile. A pair of diamond (or cubic zirconia) studs, a simple chain, and a classic watch never go out of style.</p>
+                    
+                    <h2>Care Matters</h2>
+                    <p>Keep your affordable jewelry looking expensive with proper care. Store pieces separately, avoid water and chemicals, and clean regularly with a soft cloth.</p>
+                    
+                    <p>Explore our jewelry collection at AA Global Collections, where we offer stunning pieces that look expensive but fit your budget.</p>
+                `
+            },
+            '3': {
+                title: 'Tech Gadgets That Elevate Your Lifestyle',
+                date: 'December 5, 2024',
+                category: 'Electronics',
+                image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=800',
+                content: `
+                    <p>Technology should simplify your life and add a touch of luxury to everyday tasks. Here are gadgets that do exactly that without breaking the bank.</p>
+                    
+                    <h2>Smart Home Devices</h2>
+                    <p>Voice-controlled assistants, smart plugs, and automated lighting systems make your home more efficient and impressive to guests.</p>
+                    
+                    <h2>Wireless Audio</h2>
+                    <p>Premium sound doesn't have to cost a premium price. Quality wireless earbuds and speakers with rich audio are now more affordable than ever.</p>
+                    
+                    <h2>Fitness Trackers</h2>
+                    <p>Monitor your health in style. Modern fitness bands and smartwatches look elegant while tracking everything from steps to sleep patterns.</p>
+                    
+                    <h2>Portable Chargers</h2>
+                    <p>Never run out of battery with sleek, high-capacity power banks. Some even come with built-in cables and wireless charging.</p>
+                    
+                    <h2>Smart Kitchen Appliances</h2>
+                    <p>From air fryers to smart coffee makers, these gadgets make cooking and entertaining effortless and enjoyable.</p>
+                    
+                    <p>Visit AA Global Collections to explore our range of premium electronics that combine functionality with luxury design.</p>
+                `
+            }
+        };
+        
+        async function loadBlogPost() {
+            const container = document.getElementById('blogPostContainer');
+            
+            if (!postId || !blogPosts[postId]) {
+                container.innerHTML = '<div class="text-center"><h3>Post not found</h3><a href="/blog/blog.html" class="btn-gold">Back to Blog</a></div>';
+                return;
+            }
+            
+            const post = blogPosts[postId];
+            container.innerHTML = `
+                <article class="blog-post">
+                    <img src="${post.image}" alt="${post.title}" class="img-fluid rounded mb-4">
+                    <div class="blog-post-meta mb-3">
+                        <span class="blog-category">${post.category}</span>
+                        <span class="blog-date"><i class="far fa-calendar"></i> ${post.date}</span>
+                    </div>
+                    <h1 class="blog-post-title">${post.title}</h1>
+                    <div class="blog-post-content">
+                        ${post.content}
+                    </div>
+                    <div class="blog-share mt-5">
+                        <h4>Share this post</h4>
+                        <div class="social-share">
+                            <button class="share-btn" onclick="shareOnFacebook()"><i class="fab fa-facebook-f"></i></button>
+                            <button class="share-btn" onclick="shareOnTwitter()"><i class="fab fa-twitter"></i></button>
+                            <button class="share-btn" onclick="shareOnWhatsApp()"><i class="fab fa-whatsapp"></i></button>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+        
+        function shareOnFacebook() {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank');
+        }
+        
+        function shareOnTwitter() {
+            window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(document.title)}`, '_blank');
+        }
+        
+        function shareOnWhatsApp() {
+            window.open(`https://wa.me/?text=${encodeURIComponent(document.title + ' ' + window.location.href)}`, '_blank');
+        }
+        
+        loadBlogPost();
+        if (typeof updateCartCount === 'function') updateCartCount();
+        AOS.init({ duration: 1000, once: true });
+        
+        window.shareOnFacebook = shareOnFacebook;
+        window.shareOnTwitter = shareOnTwitter;
+        window.shareOnWhatsApp = shareOnWhatsApp;
+    </script>
+    
+    <style>
+        .blog-post-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .blog-post-content h2 {
+            font-size: 1.8rem;
+            margin: 30px 0 15px;
+        }
+        .blog-post-content p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        .blog-post-meta {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .share-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--black);
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+        .share-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+            transform: translateY(-3px);
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!-- blog/blog.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | AA Global Collections</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body>
+
+    <a href="https://wa.me/2348012345678" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+                <a class="navbar-brand" href="/">
+                    <img src="/assets/images/logo/aa-global-logo.png" alt="AA Global Collections" height="50" class="d-inline-block align-middle">
+                    <span class="brand-text ms-2">
+                        <span class="brand-gold">AA</span> 
+                        <span class="brand-black">GLOBAL</span>
+                        <small class="brand-tagline">COLLECTIONS</small>
+                    </span>
+                </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop/shop.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop/categories.html">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/blog/blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pages/about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pages/contact.html">Contact</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link cart-icon" href="/shop/cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="breadcrumb-section">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Blog</li>
+                </ol>
+            </nav>
+            <h1>Luxury Lifestyle Blog</h1>
+            <p>Insights, trends, and style inspiration</p>
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="row g-4" id="blogPostsGrid">
+                <!-- Blog posts loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2024 AA Global Collections | LOOK EXPENSIVE. SPEND LESS.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="/firebase/firebase-config.js"></script>
+    <script src="/assets/js/main.js"></script>
+    
+    <script>
+        AOS.init({ duration: 1000, once: true });
+        
+        async function loadBlogPosts() {
+            const grid = document.getElementById('blogPostsGrid');
+            grid.innerHTML = '<div class="col-12 text-center"><div class="spinner"></div></div>';
+            
+            try {
+                let posts = [];
+                if (typeof db !== 'undefined') {
+                    const snapshot = await db.collection('blog_posts').orderBy('createdAt', 'desc').limit(9).get();
+                    posts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                }
+                
+                if (posts.length === 0) {
+                    posts = [
+                        { id: '1', title: '5 Luxury Fashion Trends for 2024', excerpt: 'Discover the hottest luxury fashion trends that will dominate this year.', image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600', date: 'Dec 15, 2024', category: 'Fashion' },
+                        { id: '2', title: 'How to Style Affordable Jewelry', excerpt: 'Tips to make your accessories look expensive without breaking the bank.', image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600', date: 'Dec 10, 2024', category: 'Jewelry' },
+                        { id: '3', title: 'Tech Gadgets That Elevate Your Lifestyle', excerpt: 'Must-have electronics that combine functionality with luxury design.', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=600', date: 'Dec 5, 2024', category: 'Electronics' }
+                    ];
+                }
+                
+                grid.innerHTML = posts.map(post => `
+                    <div class="col-md-4" data-aos="fade-up">
+                        <div class="blog-card" onclick="location.href='/blog/blog-details.html?id=${post.id}'">
+                            <img src="${post.image || post.featuredImage || 'https://via.placeholder.com/400x250'}" alt="${post.title}" class="blog-card-img">
+                            <div class="blog-card-content">
+                                <span class="blog-category">${post.category || 'Lifestyle'}</span>
+                                <h3>${post.title}</h3>
+                                <p>${post.excerpt || (post.content ? post.content.substring(0, 120) : '')}...</p>
+                                <div class="blog-meta">
+                                    <span><i class="far fa-calendar"></i> ${post.date || new Date(post.createdAt?.toDate()).toLocaleDateString() || 'Recent'}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading blog posts:', error);
+            }
+        }
+        
+        loadBlogPosts();
+        if (typeof updateCartCount === 'function') updateCartCount();
+    </script>
+    
+    <style>
+        .blog-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        .blog-card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .blog-card-content {
+            padding: 20px;
+        }
+        .blog-category {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--black);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .blog-card-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        .blog-card-content p {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        .blog-meta {
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!-- shop/categories.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories | AA Global Collections</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body>
+
+    <a href="https://wa.me/2348012345678" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/assets/images/logo/aa-global-logo.png" alt="AA Global Collections" height="45" class="d-inline-block align-middle">
+                <span class="brand-text ms-2">
+                    <span class="brand-gold">AA</span> 
+                    <span class="brand-black">GLOBAL</span>
+                    <small class="brand-tagline">COLLECTIONS</small>
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop/shop.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/shop/categories.html">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/blog/blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pages/about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pages/contact.html">Contact</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link cart-icon" href="/shop/cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="breadcrumb-section">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Categories</li>
+                </ol>
+            </nav>
+            <h1>Shop by Category</h1>
+            <p>Explore our curated collections</p>
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="row g-4" id="allCategoriesGrid">
+                <!-- All categories loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-brand text-center mb-4">
+                <img src="/assets/images/logo/aa-global-logo.png" alt="AA Global Collections" height="60">
+                <p class="tagline mt-2">LOOK EXPENSIVE. SPEND LESS.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AA Global Collections. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="/firebase/firebase-config.js"></script>
+    <script src="/assets/js/main.js"></script>
+    
+    <script>
+        AOS.init({ duration: 1000, once: true });
+        
+        const categories = [
+            { name: 'Fashion', icon: 'fa-tshirt', image: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600', description: 'Trendy clothing and apparel', count: 150 },
+            { name: 'Electronics', icon: 'fa-laptop', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=600', description: 'Latest tech gadgets', count: 89 },
+            { name: 'Jewelry', icon: 'fa-gem', image: 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600', description: 'Elegant accessories', count: 45 },
+            { name: 'Home Appliances', icon: 'fa-blender', image: 'https://images.unsplash.com/photo-1586000716336-9bfb60c6cdb4?w=600', description: 'Smart home solutions', count: 67 },
+            { name: 'Phones', icon: 'fa-mobile-alt', image: 'https://images.unsplash.com/photo-1678652196163-38e0a1b86ff6?w=600', description: 'Latest smartphones', count: 34 },
+            { name: 'Laptops', icon: 'fa-laptop-code', image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600', description: 'High-performance computers', count: 28 },
+            { name: 'Beauty', icon: 'fa-spa', image: 'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600', description: 'Luxury beauty products', count: 56 },
+            { name: 'Accessories', icon: 'fa-watch', image: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600', description: 'Complete your look', count: 112 }
+        ];
+        
+        function loadAllCategories() {
+            const grid = document.getElementById('allCategoriesGrid');
+            grid.innerHTML = categories.map((cat, index) => `
+                <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="${index * 50}">
+                    <div class="category-card-large" onclick="location.href='/shop/shop.html?category=${encodeURIComponent(cat.name)}'">
+                        <img src="${cat.image}" alt="${cat.name}" class="category-large-img">
+                        <div class="category-large-overlay">
+                            <i class="fas ${cat.icon}"></i>
+                            <h3>${cat.name}</h3>
+                            <p>${cat.description}</p>
+                            <span class="product-count">${cat.count}+ Products</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        loadAllCategories();
+        if (typeof updateCartCount === 'function') updateCartCount();
+    </script>
+    
+    <style>
+        .category-card-large {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 300px;
+            cursor: pointer;
+        }
+        .category-large-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .category-card-large:hover .category-large-img {
+            transform: scale(1.1);
+        }
+        .category-large-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95), rgba(0,0,0,0.7), transparent);
+            padding: 30px 20px 20px;
+            text-align: center;
+            color: white;
+        }
+        .category-large-overlay i {
+            font-size: 2.5rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+        .category-large-overlay h3 {
+            color: white;
+            margin-bottom: 5px;
+        }
+        .category-large-overlay p {
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        .product-count {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--black);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</body>
+</html>

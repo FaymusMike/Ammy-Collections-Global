@@ -1,0 +1,245 @@
+<!-- shop/product-details.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | AA Global Collections</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+</head>
+<body>
+
+    <a href="https://wa.me/2348012345678" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/assets/images/logo/aa-global-logo.png" alt="AA Global Collections" height="45" class="d-inline-block align-middle">
+                <span class="brand-text ms-2">
+                    <span class="brand-gold">AA</span> 
+                    <span class="brand-black">GLOBAL</span>
+                    <small class="brand-tagline">COLLECTIONS</small>
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop/shop.html">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/shop/categories.html">Categories</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/blog/blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pages/about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/pages/contact.html">Contact</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link cart-icon" href="/shop/cart.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count" id="cartCount">0</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="breadcrumb-section">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item"><a href="/shop/shop.html">Shop</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Product Details</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="row" id="productDetailsContainer">
+                <div class="col-12 text-center">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-brand text-center mb-4">
+                <img src="/assets/images/logo/aa-global-logo.png" alt="AA Global Collections" height="60">
+                <p class="tagline mt-2">LOOK EXPENSIVE. SPEND LESS.</p>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 AA Global Collections. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="/firebase/firebase-config.js"></script>
+    <script src="/assets/js/main.js"></script>
+    
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        
+        async function loadProductDetails() {
+            const container = document.getElementById('productDetailsContainer');
+            
+            if (!productId) {
+                container.innerHTML = '<div class="col-12 text-center"><h3>Product not found</h3><a href="/shop/shop.html" class="btn-gold">Back to Shop</a></div>';
+                return;
+            }
+            
+            try {
+                let product = null;
+                if (typeof db !== 'undefined') {
+                    const doc = await db.collection('products').doc(productId).get();
+                    if (doc.exists) product = { id: doc.id, ...doc.data() };
+                }
+                
+                if (!product) {
+                    // Demo product
+                    product = {
+                        id: productId,
+                        name: 'Luxury Product',
+                        price: 50000,
+                        category: 'Premium',
+                        image: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600',
+                        description: 'Experience the epitome of luxury with our premium collection. Crafted with attention to detail and designed for those who appreciate quality.',
+                        specifications: ['Premium Quality', 'International Standard', 'Limited Edition']
+                    };
+                }
+                
+                container.innerHTML = `
+                    <div class="col-lg-6" data-aos="fade-right">
+                        <img src="${product.image}" alt="${product.name}" class="img-fluid rounded shadow-lg">
+                    </div>
+                    <div class="col-lg-6" data-aos="fade-left">
+                        <h1>${product.name}</h1>
+                        <p class="product-category">${product.category || 'Luxury'}</p>
+                        <h2 class="product-price">₦${(product.price || 0).toLocaleString()}</h2>
+                        <p class="product-description">${product.description || 'Discover the perfect blend of style and quality. This premium product is designed to elevate your lifestyle.'}</p>
+                        
+                        <div class="product-specs mt-4">
+                            <h4>Specifications</h4>
+                            <ul>
+                                ${(product.specifications || ['Premium Quality', 'Authentic Product', 'Fast Shipping']).map(spec => `<li><i class="fas fa-check-circle gold-text"></i> ${spec}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="product-actions mt-4">
+                            <div class="quantity-selector mb-3">
+                                <button class="qty-btn" onclick="decrementQty()">-</button>
+                                <span id="productQty" class="qty-value">1</span>
+                                <button class="qty-btn" onclick="incrementQty()">+</button>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <button class="btn-cart" onclick="addCurrentToCart()">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                                <button class="btn-whatsapp" onclick="orderOnWhatsApp()">
+                                    <i class="fab fa-whatsapp"></i> Order Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading product:', error);
+                container.innerHTML = '<div class="col-12 text-center"><h3>Error loading product</h3></div>';
+            }
+        }
+        
+        let currentQuantity = 1;
+        
+        function incrementQty() {
+            currentQuantity++;
+            document.getElementById('productQty').textContent = currentQuantity;
+        }
+        
+        function decrementQty() {
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                document.getElementById('productQty').textContent = currentQuantity;
+            }
+        }
+        
+        function addCurrentToCart() {
+            const product = {
+                id: productId,
+                name: document.querySelector('h1')?.textContent || 'Product',
+                price: parseFloat(document.querySelector('.product-price')?.textContent.replace(/[^0-9]/g, '') || '0'),
+                image: document.querySelector('.col-lg-6 img')?.src,
+                quantity: currentQuantity
+            };
+            addToCart(product);
+        }
+        
+        function orderOnWhatsApp() {
+            const productName = document.querySelector('h1')?.textContent || 'Product';
+            const productPrice = document.querySelector('.product-price')?.textContent || '₦0';
+            const message = `I want to order ${productName} (Quantity: ${currentQuantity}) - ${productPrice}`;
+            window.open(`https://wa.me/2348012345678?text=${encodeURIComponent(message)}`, '_blank');
+        }
+        
+        loadProductDetails();
+        if (typeof updateCartCount === 'function') updateCartCount();
+        AOS.init({ duration: 1000, once: true });
+        
+        window.incrementQty = incrementQty;
+        window.decrementQty = decrementQty;
+        window.addCurrentToCart = addCurrentToCart;
+        window.orderOnWhatsApp = orderOnWhatsApp;
+    </script>
+    
+    <style>
+        .product-specs ul {
+            list-style: none;
+            padding: 0;
+        }
+        .product-specs li {
+            margin-bottom: 10px;
+        }
+        .product-specs li i {
+            margin-right: 10px;
+        }
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .qty-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .qty-btn:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+        .qty-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: center;
+        }
+    </style>
+</body>
+</html>

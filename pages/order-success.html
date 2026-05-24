@@ -1,0 +1,69 @@
+<!-- pages/order-success.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful | AA Global Collections</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+        <div class="container">
+                 <a class="navbar-brand" href="/">
+                    <img src="/assets/images/logo/aa-global-logo.png" alt="AA Global Collections" height="50" class="d-inline-block align-middle">
+                    <span class="brand-text ms-2">
+                        <span class="brand-gold">AA</span> 
+                        <span class="brand-black">GLOBAL</span>
+                        <small class="brand-tagline">COLLECTIONS</small>
+                    </span>
+                </a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb-section">
+        <div class="container">
+            <h1>Order Successful!</h1>
+        </div>
+    </div>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="success-card text-center">
+                <i class="fas fa-check-circle success-icon"></i>
+                <h2>Thank You for Your Order!</h2>
+                <p>Your order has been received and is being processed.</p>
+                <p>You will receive a confirmation message shortly via WhatsApp or Email.</p>
+                <a href="/shop/shop.html" class="btn-gold mt-3">Continue Shopping</a>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .success-card {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 50px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        .success-icon {
+            font-size: 80px;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+        .success-card h2 {
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <script>
+        if (typeof updateCartCount === 'function') updateCartCount();
+    </script>
+</body>
+</html>
